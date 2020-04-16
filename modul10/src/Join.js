@@ -2,6 +2,8 @@ import React, { useState, useContext } from "react";
 import { AuthContext } from "./index";
 import * as firebase from "firebase";
 
+var provider = new firebase.auth.GoogleAuthProvider();
+
 const Join =() => {
     const [email,setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -23,6 +25,19 @@ const Join =() => {
         // console.log(Auth);
         // Auth.setLoggedIn(true);
     };
+
+    const joinWithGoogle = e => {
+        e.preventDefault();
+        firebase
+            .auth()
+            .signInWithPopup(provider)
+            .then(res => {
+                if (res.user) Auth.setLoggedIn(true);
+            })
+            .catch(e => {
+                setErrors(e.message);
+            })
+    }
 
     return(
         <div>
